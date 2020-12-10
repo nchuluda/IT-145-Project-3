@@ -104,9 +104,9 @@ public class Driver {
     // hardcoded cruise data for testing
     // Initialize cruise list
     public static void initializeCruiseList() {
-        Cruise newCruise = new Cruise("Southern Swirl", "Candy Cane", "Miami", "Cuba", "Miami");
+        Cruise newCruise = new Cruise("Southern Swirl", "Candy Cane", "Miami", "Cuba", "Miami", 260, 0);
         cruiseList.add(newCruise);
-        Cruise cruise2 = new Cruise("Baltic Seas", "Bon Bon", "Stockholm", "Bergen", "Copenhagen");
+        Cruise cruise2 = new Cruise("Baltic Seas", "Bon Bon", "Stockholm", "Bergen", "Copenhagen", 112, 0);
         cruiseList.add(cruise2);
     }
 
@@ -385,6 +385,10 @@ public class Driver {
         // complete this method
     	Scanner newCruiseInput = new Scanner(System.in);
     	
+    	// Initialize variables for maximum passengers and number of passengers currently booked
+    	int newMaxPass = 0;
+    	int newBookedPass = 0;
+    	
     	// prompt user to enter cruise name
     	System.out.println("Enter the new cruise's name: ");
     	String newCruiseName = newCruiseInput.nextLine();
@@ -417,6 +421,7 @@ public class Driver {
     		// ensure cruise ship name exists and is in service
     		if (eachShip.getShipName().equalsIgnoreCase(newCruiseShipName) && eachShip.getInService()) {
     			cruiseShipExists = true;
+    			newMaxPass = eachShip.getMaxPassengers();
     		} 
     	}
     	
@@ -452,7 +457,7 @@ public class Driver {
     	
     	// All user input valid
     	// Create new cruise using user input and cruise constructor
-    	Cruise newCruise1 = new Cruise(newCruiseName, newCruiseShipName, newCruiseDeparturePort, newCruiseDestination, newCruiseReturnPort);
+    	Cruise newCruise1 = new Cruise(newCruiseName, newCruiseShipName, newCruiseDeparturePort, newCruiseDestination, newCruiseReturnPort, newMaxPass, newBookedPass);
     	cruiseList.add(newCruise1);
     }
 
@@ -470,6 +475,9 @@ public class Driver {
         Scanner newPassengerInput = new Scanner(System.in);
         System.out.println("Enter the new passenger's name: ");
         String newPassengerName = newPassengerInput.nextLine();
+        Boolean spaceAvailable = false;
+        int currentPassengers = 0;
+        int maxCruisePassengers = 0;
 
         // ensure new passenger name does not already exist
         for (Passenger eachPassenger: passengerList) {
@@ -487,6 +495,9 @@ public class Driver {
         for (Cruise eachCruise: cruiseList) {
             if (eachCruise.getCruiseName().equalsIgnoreCase(newCruiseName)) {
                 // cruise does exist
+            	// assign number of passengers already booked to currentPassengers
+            	//currentPassengers = eachCruise.getBookedPass();
+            	//maxCruisePassengers = eachCruise.getMaxPass();
             } else {
                 System.out.println("That cruise does not exist in the system. Exiting to menu...");
                 return; // quits addPassenger() method processing
@@ -499,7 +510,11 @@ public class Driver {
         // validate room type
         if ((room.equalsIgnoreCase("BAL")) || (room.equalsIgnoreCase("OV")) ||
                 (room.equalsIgnoreCase("STE")) || (room.equalsIgnoreCase("INT"))) {
-            // validation passed - add passenger
+            if (currentPassengers < maxCruisePassengers) {
+            	
+            }
+        	
+        	// validation passed - add passenger
             Passenger newPassenger = new Passenger(newPassengerName, newCruiseName, room.toUpperCase());
             passengerList.add(newPassenger);
         } else {
